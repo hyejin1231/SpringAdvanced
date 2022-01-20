@@ -1,30 +1,23 @@
 package hello.advanced.trace.threadlocal;
 
-import hello.advanced.trace.threadlocal.code.FieldService;
+import hello.advanced.trace.threadlocal.code.ThreadLocalService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class FieldServiceTest {
+public class ThreadLocalServiceTest {
 
-    private FieldService fieldService = new FieldService();
+    private ThreadLocalService service = new ThreadLocalService();
 
     @Test
     void field() {
         log.info("main start");
-
-//        Runnable userA = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        } 이 형식을 람다로 표현한 것이다!
         Runnable userA = () -> {
-            fieldService.logic("userA");
+            service.logic("userA");
         };
 
         Runnable userB = () -> {
-            fieldService.logic("userB");
+            service.logic("userB");
         };
 
         Thread threadA = new Thread(userA);
@@ -33,8 +26,8 @@ public class FieldServiceTest {
         threadB.setName("thread-B");
 
         threadA.start();
-//        sleep(100);
-        sleep(2000); // 동시성 문제가 발생 X
+        sleep(100);
+//        sleep(2000); // 동시성 문제가 발생 X
         threadB.start();
 
         sleep(3000); // 메인 쓰레드 종료 대기
